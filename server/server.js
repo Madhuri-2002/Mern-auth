@@ -1,36 +1,41 @@
 import express from 'express'
 import env from 'dotenv'
 import multer from 'multer'
-// import connectDB from './Dbconnection.js'
+import connectDB from './Dbconnection.js'
 import userRoutes from './Routes/user.route.js'
 import authRoutes from './Routes/auth.route.js'
 import bodyParser from 'body-parser';
-
+import cors from 'cors'
 const app = express()
 app.use(express.json())
 app.use(bodyParser.json())
+app.use(cors())
 env.config()
 const PORT = process.env.PORT
 const url = process.env.MONGO_URL
 
 app.use('/api/user', userRoutes)
-app.use('/api', authRoutes)
+
+const b = () => {
+    console.log("vgbhj");
+}
+app.use('/api',b, authRoutes)
 
 //DB connection
-// connectDB()
-//     .then(() => {
-//         app.listen(PORT, () => {
-//             console.log(`Server listening on port ${PORT}`);
-//         });
-//     })
-//     .catch((error) => {
-//         console.error(`Failed to connect to MongoDB: ${error}`);
-//         process.exit(1); // Exit process with failure
-//     });
+connectDB()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server listening on port ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error(`Failed to connect to MongoDB: ${error}`);
+        process.exit(1); // Exit process with failure
+    });
 
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server listening on port ${PORT}`);
+// });
 
 
 // unknown router handler

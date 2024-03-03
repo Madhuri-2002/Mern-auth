@@ -3,6 +3,7 @@ import bcryptjs from 'bcryptjs'
 import { errorHandler } from "../utils/errorHandler.js"
 export const signup = async (req, res, next) => {
     //order isn't mandatory
+
     console.log(req.body);
     const { email, password, username } = req.body
     //hashsync method is asynchronous we can use hash for synchronous put 'await', same with compare, compareSync
@@ -11,7 +12,7 @@ export const signup = async (req, res, next) => {
     const user = await new userModel({ username, email, password: hashPassword })
     try {
         await user.save()
-        res.status(201).json({ "message": "User created successfully" })
+        res.status(201).json({"success":true, "message": "User created successfully" })
     }
     catch (err) {
         // res.status(500).json({ "error": `Error in creating user ${err}` })
